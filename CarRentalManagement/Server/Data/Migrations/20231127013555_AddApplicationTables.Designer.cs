@@ -4,6 +4,7 @@ using CarRentalManagement.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarRentalManagement.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231127013555_AddApplicationTables")]
+    partial class AddApplicationTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,26 +94,6 @@ namespace CarRentalManagement.Server.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "2b400342-7bbb-4d33-967b-99d2c98b984e",
-                            Email = "admin@localhost.com",
-                            EmailConfirmed = false,
-                            FirstName = "Admin",
-                            LastName = "User",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@LOCALHOST.COM",
-                            NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPJsBDnQMChlPUzXMNox8GS2I1AIZhHNt1VDVAgZEILLfLcpGsHUIUXT0qbpOjeAOg==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "5460e7aa-7d3d-4863-bc3c-eaf1f03beed0",
-                            TwoFactorEnabled = false,
-                            UserName = "admin@localhost.com"
-                        });
                 });
 
             modelBuilder.Entity("CarRentalManagement.Shared.Domain.Booking", b =>
@@ -136,10 +119,10 @@ namespace CarRentalManagement.Server.Data.Migrations
                     b.Property<DateTime>("DateOut")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateUpdated")
+                    b.Property<DateTime>("Updated")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UpdatedBy")
+                    b.Property<string>("Updatedby")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("VehicleId")
@@ -168,38 +151,18 @@ namespace CarRentalManagement.Server.Data.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateUpdated")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UpdatedBy")
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Updatedby")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
                     b.ToTable("Colours");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = 1,
-                            CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 11, 27, 10, 30, 23, 234, DateTimeKind.Local).AddTicks(15),
-                            DateUpdated = new DateTime(2023, 11, 27, 10, 30, 23, 234, DateTimeKind.Local).AddTicks(31),
-                            Name = "Black",
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            ID = 2,
-                            CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 11, 27, 10, 30, 23, 234, DateTimeKind.Local).AddTicks(37),
-                            DateUpdated = new DateTime(2023, 11, 27, 10, 30, 23, 234, DateTimeKind.Local).AddTicks(38),
-                            Name = "Blue",
-                            UpdatedBy = "System"
-                        });
                 });
 
             modelBuilder.Entity("CarRentalManagement.Shared.Domain.Customer", b =>
@@ -222,16 +185,16 @@ namespace CarRentalManagement.Server.Data.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateUpdated")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("DrivingLicense")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmailAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UpdatedBy")
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Updatedby")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
@@ -253,38 +216,18 @@ namespace CarRentalManagement.Server.Data.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateUpdated")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UpdatedBy")
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Updatedby")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
                     b.ToTable("Makes");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = 1,
-                            CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 11, 27, 10, 30, 23, 234, DateTimeKind.Local).AddTicks(1078),
-                            DateUpdated = new DateTime(2023, 11, 27, 10, 30, 23, 234, DateTimeKind.Local).AddTicks(1083),
-                            Name = "BMW",
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            ID = 2,
-                            CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 11, 27, 10, 30, 23, 234, DateTimeKind.Local).AddTicks(1088),
-                            DateUpdated = new DateTime(2023, 11, 27, 10, 30, 23, 234, DateTimeKind.Local).AddTicks(1090),
-                            Name = "Toyota",
-                            UpdatedBy = "System"
-                        });
                 });
 
             modelBuilder.Entity("CarRentalManagement.Shared.Domain.Model", b =>
@@ -301,56 +244,18 @@ namespace CarRentalManagement.Server.Data.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateUpdated")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UpdatedBy")
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Updatedby")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
                     b.ToTable("Models");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = 1,
-                            CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 11, 27, 10, 30, 23, 234, DateTimeKind.Local).AddTicks(1722),
-                            DateUpdated = new DateTime(2023, 11, 27, 10, 30, 23, 234, DateTimeKind.Local).AddTicks(1727),
-                            Name = "3 Series",
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            ID = 2,
-                            CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 11, 27, 10, 30, 23, 234, DateTimeKind.Local).AddTicks(1732),
-                            DateUpdated = new DateTime(2023, 11, 27, 10, 30, 23, 234, DateTimeKind.Local).AddTicks(1733),
-                            Name = "X5",
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            ID = 3,
-                            CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 11, 27, 10, 30, 23, 234, DateTimeKind.Local).AddTicks(1736),
-                            DateUpdated = new DateTime(2023, 11, 27, 10, 30, 23, 234, DateTimeKind.Local).AddTicks(1737),
-                            Name = "Prius",
-                            UpdatedBy = "System"
-                        },
-                        new
-                        {
-                            ID = 4,
-                            CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 11, 27, 10, 30, 23, 234, DateTimeKind.Local).AddTicks(1740),
-                            DateUpdated = new DateTime(2023, 11, 27, 10, 30, 23, 234, DateTimeKind.Local).AddTicks(1741),
-                            Name = "Rav4",
-                            UpdatedBy = "System"
-                        });
                 });
 
             modelBuilder.Entity("CarRentalManagement.Shared.Domain.Vehicle", b =>
@@ -370,9 +275,6 @@ namespace CarRentalManagement.Server.Data.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateUpdated")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("LicensePlateNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -382,7 +284,10 @@ namespace CarRentalManagement.Server.Data.Migrations
                     b.Property<int>("ModelId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UpdatedBy")
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Updatedby")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Year")
@@ -565,20 +470,6 @@ namespace CarRentalManagement.Server.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "ad2bcf0c-20db-474f-8407-5a6b159518ba",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
-                        },
-                        new
-                        {
-                            Id = "bd2bcf0c-20db-474f-8407-5a6b159518bb",
-                            Name = "User",
-                            NormalizedName = "USER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -668,13 +559,6 @@ namespace CarRentalManagement.Server.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "3781efa7-66dc-47f0-860f-e506d04102e4",
-                            RoleId = "ad2bcf0c-20db-474f-8407-5a6b159518ba"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
