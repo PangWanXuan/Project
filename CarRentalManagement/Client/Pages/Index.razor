@@ -1,70 +1,62 @@
-﻿@page "/vehicles/"
-@inject HttpClient _client
-@inject IJSRuntime js
-@attribute [Authorize]
+﻿@page "/"
+@inherits LayoutComponentBase
 
-<h3>Vehicles</h3>
-
-@if (Vehicles == null)
-{
-    <div class="alert alert-info"> Loading Vehicles...</div>
-}
-else
-{
-    <table class="table table-responsive">
-        <thead>
-            <tr>
-                <th>Make</th>
-                <th>Model</th>
-                <th>Year</th>
-                <th>License Plate Number</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var vehicle in Vehicles)
-            {
-                <tr>
-                    <td>@vehicle.Make.Name</td>
-                    <td>@vehicle.Model.Name</td>
-                    <td>@vehicle.Year</td>
-                    <td>@vehicle.LicensePlateNumber</td>
-
-                    <td>
-                        <a href="/vehicle/view/@vehicle.ID" class="btn btn-primary">
-                            <span class="oi oi-book"></span>
-                        </a>
-                        <a href="vehicle/edit/@vehicle.ID" class="btn btn-warning">
-                            <span class="oi oi-pencil"></span>
-                        </a>
-                        <button class="btn btn-danger" @onclick="@(()=>Delete(vehicle.ID))">
-                            <span class="oi oi-delete"></span>
-                        </button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-
-@code {
-    private List<Vehicle>? Vehicles;
-    protected async override Task OnInitializedAsync()
-    {
-        Vehicles = await _client.GetFromJsonAsync<List<Vehicle>>($"{Endpoints.VehiclesEndpoint}");
+<style>
+    body {
+        margin: 0;
+        padding: 0;
     }
 
-    async Task Delete(int vehicleID)
-    {
-        if (Vehicles != null)
-        {
-            var vehicle = Vehicles.First(q => q.ID == vehicleID);
-            var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {vehicle.LicensePlateNumber}?");
-            if (confirm)
-            {
-                await _client.DeleteAsync($"{Endpoints.VehiclesEndpoint}/{vehicleID}");
-                await OnInitializedAsync();
-            }
+    .landing-intro {
+        background-color: #343a40; /* Dark background color */
+        color: #fff; /* Text color on the dark background */
+        text-align: center;
+        padding: 50px 0; /* Adjusted padding to make it more compact */
+    }
+
+        .landing-intro h1 {
+            font-size: 2.5em;
         }
+
+        .landing-intro p {
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+
+    .landing-section {
+        /* Style for individual target audience sections */
+        background-color: #f8f9fa; /* Light background color */
+        padding: 20px 0; /* Adjusted padding to make it more compact */
+        text-align: center;
     }
+
+        .landing-section h2 {
+            margin-top: 10px; /* Adjusted margin to move it closer to the intro section */
+        }
+
+        .landing-section p {
+            margin-top: 10px; /* Adjusted margin to move it closer to the intro section */
+        }
+
+    /* Add similar styling for other sections as needed */
+
+</style>
+
+<!-- Introduction Section -->
+<div class="landing-intro">
+    <h1>Welcome to Happy Travel</h1>
+    <p>Experience hassle-free and reliable transportation services tailored for your needs.</p>
+</div>
+
+<!-- Individual Travelers Section -->
+<div class="landing-section">
+    <h2>Discover Personalized Travel</h2>
+    <p>Explore convenient and hassle-free travel options for vacations and daily commuting.</p>
+    <a class="btn btn-success" href="/bookings">Book Now</a>
+</div>
+
+<!-- Business Travelers Section -->
+<!-- ... (Other sections for different target audiences) -->
+@code {
+    // You can add code logic here if needed
 }

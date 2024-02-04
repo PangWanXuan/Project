@@ -1,12 +1,7 @@
-﻿@page "/vehicles/create/"
-@inject HttpClient _client
-@inject NavigationManager _navManager
+﻿@inject HttpClient _client
 
-<h3 class="card-title">Create new vehicles</h3>
-<hr />
-<br />
 
-<EditForm Model="@vehicle" OnValidSubmit="CreateVehicle">
+<EditForm Model="@vehicle" OnValidSubmit="@OnValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -26,6 +21,7 @@
             <ValidationMessage For="@(() => vehicle.MakeId)" />
         </div>
     </div>
+
 
     <div class="form-group">
         <label>Model :</label>
@@ -86,18 +82,18 @@
     </div>
 
     <button type="submit" class="btn btn-success btn-block">
-        Create vehicle
+        @ButtonText
     </button>
 
-    <!-- New "Back" button -->
-    <button class="btn btn-secondary mt-3" @onclick="GoBack">
-        <span class="oi oi-arrow-left"></span>
-        Back to Vehicles
-    </button>
+
+
 </EditForm>
 
 @code {
-    Vehicle vehicle = new Vehicle();
+    [Parameter] public Vehicle? vehicle { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+
     private IList<Make>? Makes;
     private IList<Model>? Models;
     private IList<Colour>? Colours;
@@ -107,16 +103,5 @@
         Makes = await _client.GetFromJsonAsync<List<Make>>($"{Endpoints.MakesEndpoint}");
         Models = await _client.GetFromJsonAsync<List<Model>>($"{Endpoints.ModelsEndpoint}");
         Colours = await _client.GetFromJsonAsync<List<Colour>>($"{Endpoints.ColoursEndpoint}");
-    }
-
-    private async Task CreateVehicle()
-    {
-        await _client.PostAsJsonAsync(Endpoints.VehiclesEndpoint, vehicle);
-        _navManager.NavigateTo("/vehicles/");
-    }
-
-    private void GoBack()
-    {
-        _navManager.NavigateTo("/vehicles/");
     }
 }

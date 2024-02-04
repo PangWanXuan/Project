@@ -1,0 +1,89 @@
+﻿@inject HttpClient _client
+
+<EditForm Model="@booking" OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Date Of Rental:</label>
+        <div>
+            <InputDate @bind-Value="booking.DateOut" class="form-control" />
+            <ValidationMessage For="@(() => booking.DateOut)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Date Of Return:</label>
+        <div>
+            <InputDate @bind-Value="booking.DateIn" class="form-control" />
+            <ValidationMessage For="@(() => booking.DateIn)" />
+        </div>
+    </div>
+
+    <!-- Display the calculated number of days -->
+    <div class="form-group">
+        <label>Number of Days:</label>
+        <div>
+            <p>@NumberOfDays days</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Vehicle:</label>
+        <div>
+            <!-- Assume you have a dropdown for selecting a vehicle -->
+            <InputSelect @bind-Value="booking.VehicleId" class="form-control">
+                <option value="">-- Select Vehicle --</option>
+                @if (Vehicles != null)
+                {
+                    foreach (var vehicle in Vehicles)
+                    {
+                        <option value="@vehicle.ID">@vehicle.LicensePlateNumber</option>
+                    }
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => booking.VehicleId)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Name On Card:</label>
+        <div>
+            <!-- Assume you have a dropdown for selecting a customer -->
+            <InputSelect @bind-Value="booking.CustomerId" class="form-control">
+                <option value="">-- Select Customer --</option>
+                @if (Customers != null)
+                {
+                    foreach (var customer in Customers)
+                    {
+                        <option value="@customer.ID">@customer.Name</option>
+                    }
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => booking.CustomerId)" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        @ButtonText
+    </button>
+</EditForm>
+
+@code {
+    // Add this property to store the calculated number of days
+    private int NumberOfDays => (booking.DateIn - booking.DateOut).Days;
+
+    [Parameter] public Booking? booking { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+
+    private IList<Vehicle>? Vehicles;
+    private IList<Customer>? Customers;
+
+    protected async override Task OnInitializedAsync()
+    {
+        // Fetch the list of vehicles and customers to populate dropdowns
+        Vehicles = await _client.GetFromJsonAsync<List<Vehicle>>($"{Endpoints.VehiclesEndpoint}");
+        Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
+    }
+}

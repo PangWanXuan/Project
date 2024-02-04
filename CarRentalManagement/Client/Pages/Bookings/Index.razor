@@ -3,7 +3,14 @@
 @inject IJSRuntime js
 @attribute [Authorize]
 
-<h3>Bookings</h3>
+<h3 class="card-title">Book a vehicle</h3>
+<br />
+<a href="/bookings/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Book a vehicle
+</a>
+<br />
+<br />
 
 @if (Bookings == null)
 {
@@ -14,9 +21,10 @@ else
     <table class="table table-responsive">
         <thead>
             <tr>
-                <th>Booking Id</th>
+                <th>Rental Rate</th>
                 <th>Customer License</th>
                 <th>Date</th>
+                <th>Days Of Rental</th>
                 <th>Plate Number</th>
                 <th>Actions</th>
             </tr>
@@ -25,16 +33,17 @@ else
             @foreach (var booking in Bookings)
             {
                 <tr>
-                    <td>@booking.ID</td>
+                    <td>@($"${booking.Vehicle.RentalRate}/day")</td>
                     <td>@booking.Customer.DrivingLicense</td>
                     <td>@booking.DateCreated.Date.ToString("dd MMMM yyyy")</td>
-                    <td>@((booking.DateIn - booking.DateOut).TotalDays.ToString())</td>
+                    <td>@(booking.DateIn != nullDT ? (booking.DateIn - booking.DateOut).TotalDays.ToString() : "To Be Determined")</td>
                     <td>@booking.Vehicle.LicensePlateNumber</td>
+
                     <td>
-                        <a href="/booking/view/@booking.ID" class="btn btn-primary">
+                        <a href="/bookings/view/@booking.ID" class="btn btn-primary">
                             <span class="oi oi-book"></span>
                         </a>
-                        <a href="booking/edit/@booking.ID" class="btn btn-warning">
+                        <a href="bookings/edit/@booking.ID" class="btn btn-warning">
                             <span class="oi oi-pencil"></span>
                         </a>
                         <button class="btn btn-danger" @onclick="@(()=>Delete(booking.ID))">
@@ -49,6 +58,7 @@ else
 
 @code {
     private List<Booking>? Bookings;
+    private DateTime nullDT = new DateTime(1, 1, 1, 0, 0, 0);
     protected async override Task OnInitializedAsync()
     {
         Bookings = await _client.GetFromJsonAsync<List<Booking>>($"{Endpoints.BookingsEndpoint}");
